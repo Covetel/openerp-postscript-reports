@@ -29,11 +29,8 @@ class account_invoice(osv.osv):
     _inherit = "account.invoice"
     
     def invoice_print_ps(self, cr, uid, ids, context=None):
-        warning = {
-            'title': 'Warning!',
-            'message' : 'Your message.'
-        }
+        print context
+        partner_name = self.pool.get('res.partner').browse(cr, uid, context.get('partner_id')).name
 
-        return {'warning': warning}
     
 account_invoice()
