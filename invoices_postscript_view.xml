@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/header//button[@name='invoice_print']" position="after">
-                    <button name="invoice_print_ps" string="Print PS" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>
+                    <button name="invoice_print_ps" string="Print PS" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user" context="{'partner_id':partner_id, 'date_invoice':date_invoice, 'journal_id':journal_id, 'amount_total':amount_total, 'amount_untaxed':amount_untaxed, 'number':number, 'fical_position':fiscal_position, 'invoice_line':invoice_line}"/>
                 </xpath>
             </field>
         </record>
