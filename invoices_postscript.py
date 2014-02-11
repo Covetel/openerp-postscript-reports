@@ -24,8 +24,8 @@ from datetime import datetime
 import time
 from osv import fields, osv
 
-class invoices_postscript(osv.osv):
-    _name = "invoice.postscript"
+class account_invoice(osv.osv):
+    _name = "account.invoice"
     _inherit = "account.invoice"
     
     def invoice_print_ps(self, cr, uid, ids, context=None):
@@ -36,4 +36,4 @@ class invoices_postscript(osv.osv):
 
         return {'warning': warning}
     
-invoices_postscript()
+account_invoice()
