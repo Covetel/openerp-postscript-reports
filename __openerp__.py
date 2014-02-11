@@ -8,7 +8,10 @@
    'depends': ['stock', 'procurement', 'board', 'sale'],
    'data': [],
    'init_xml': [],
-   'update_xml': [],
+   'update_xml': [
+       #'reports.xml',
+       'invoices_postscript_view.xml',
+   ],
    'demo_xml': [],
    'test': [],
    'installable': True,
