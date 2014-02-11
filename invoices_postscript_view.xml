@@ -2,14 +2,13 @@
 <openerp>
     <data>
         <record id="invoces_postscript_view" model="ir.ui.view">
-            <field name="name">itps.project.form</field>
-            <field name="model">account.invoices</field>
+            <field name="name">account.invoices.postscript</field>
+            <field name="model">account.invoice</field>
             <field name="type">form</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-                <xpath expr="/form/sheet//field[@name='type']" position="after">
-                    <!--<button name="invoice_print_ps" string="Print PS" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>-->
-                    <button name="invoice_print_ps" string="Print PS" type="object" groups="base.group_user"/>
+                <xpath expr="/form/header//button[@name='invoice_print']" position="after">
+                    <button name="invoice_print_ps" string="Print PS" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>
                 </xpath>
             </field>
         </record>
