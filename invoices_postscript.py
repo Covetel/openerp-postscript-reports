@@ -21,16 +21,60 @@
 ##############################################################################
 
 from datetime import datetime
-import time
+import time, subprocess, base64
 from osv import fields, osv
+from openerp import modules, tools
 
 class account_invoice(osv.osv):
     _name = "account.invoice"
     _inherit = "account.invoice"
+
+    _columns = {
+        "postscript" : fields.binary("File", readonly=True),
+    }
     
     def invoice_print_ps(self, cr, uid, ids, context=None):
-        print context
-        partner_name = self.pool.get('res.partner').browse(cr, uid, context.get('partner_id')).name
+        inv = {}
+        invoices = self.browse(cr, uid, ids)
+        for invoice in invoices:
+            inv.update({'partner_name': invoice.partner_id.name,
+                'partner_name' : invoice.partner_id.name,
+                'date_invoice' : invoice.date_invoice,
+                'fiscal_position_name' : invoice.fiscal_position.name,
+                'invoice_amount_untaxed' : invoice.amount_untaxed,
+                'invoice_amount_total' : invoice.amount_total,
+                'invoice_number' : invoice.number,
+            })
 
-    
+            invoice_lines = invoice.invoice_line
+            inv_lines  = []
+            inv_line = {}
+
+            for invoice_line in invoice_lines:
+                inv_line.update({'invoice_line_name' : invoice_line.name,
+                    'invoice_line_price_subtotal' : invoice_line.price_subtotal,
+                    'invoice_line_price_unit' : invoice_line.price_unit,
+                    'invoice_line_quantity' : invoice_line.quantity,})
+
+                inv_lines.append(inv_line)
+
+                inv.update({'invoice_lines' : inv_lines})
+
+        path_module = modules.get_module_path('openerp-postscript-reports')
+
+        subprocess.call(['python', path_module + '/gen_ps.py', str(inv)])
+
+        file = open(path_module +
+                    "/" +
+                    "invoice" +
+                    ".ps", "rb")
+
+        fileContent = file.read()
+        out = base64.encodestring(fileContent)
+
+        self.write(cr, uid, ids, {'postscript' : out}, context=context)
+        file.close()
+
+        url =  self.browse(cr, uid, ids)[0].postscript
+
 account_invoice()
