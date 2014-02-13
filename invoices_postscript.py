@@ -30,11 +30,13 @@ class account_invoice(osv.osv):
     _inherit = "account.invoice"
 
     _columns = {
-        "postscript" : fields.binary("File", readonly=True),
+        "postscript" : fields.binary('Postscript File', readonly=True),
+        "postscript_name" : fields.char('Invoice Postscript', 40, readonly=True),
     }
     
     def invoice_print_ps(self, cr, uid, ids, context=None):
         inv = {}
+        path_module = modules.get_module_path('openerp-postscript-reports')
         invoices = self.browse(cr, uid, ids)
         for invoice in invoices:
             inv.update({'partner_name': invoice.partner_id.name,
@@ -44,6 +46,7 @@ class account_invoice(osv.osv):
                 'invoice_amount_untaxed' : invoice.amount_untaxed,
                 'invoice_amount_total' : invoice.amount_total,
                 'invoice_number' : invoice.number,
+                'path': path_module,
             })
 
             invoice_lines = invoice.invoice_line
@@ -60,7 +63,6 @@ class account_invoice(osv.osv):
 
                 inv.update({'invoice_lines' : inv_lines})
 
-        path_module = modules.get_module_path('openerp-postscript-reports')
 
         subprocess.call(['python', path_module + '/gen_ps.py', str(inv)])
 
@@ -72,9 +74,23 @@ class account_invoice(osv.osv):
         fileContent = file.read()
         out = base64.encodestring(fileContent)
 
-        self.write(cr, uid, ids, {'postscript' : out}, context=context)
+        self.write(cr, uid, ids, {'postscript_name': 'invoice.ps', 'postscript' : out}, context=context)
         file.close()
 
-        url =  self.browse(cr, uid, ids)[0].postscript
+        #Busco ID de la vista
+        obj_model = self.pool.get('ir.model.data')
+        model_data_ids = obj_model.search(cr,uid,[('model','=','ir.ui.view'),('name','=','postscript_download')])
+        view_id = obj_model.read(cr, uid, model_data_ids, fields=['res_id'])[0]['res_id']
+
+        return {
+            'type': 'ir.actions.act_window',
+            'title': 'Downloadme',
+            'res_model': 'account.invoice',
+            'view_id': view_id,
+            'view_mode': 'form',
+            'res_id': ids[0],
+            'target': 'new',
+        }
+
 
 account_invoice()
