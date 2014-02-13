@@ -21,6 +21,7 @@
                 <form string="PostScript">
                     <field  name="postscript" string="Descargar Factura" readonly="1" filename="postscript_name" />
                 </form>
+                <button string="Cerrar" class="oe_form_button" special="cancel" />
             </field>
         </record>
     </data>
