@@ -22,7 +22,7 @@ def generate_postscript(invoice_dict):
     c.text(18, 19, r"Factura N: \LARGE \textbf{\textcolor{red}{"+str(invoice_dict['invoice_number'])+"}}")
 
     #Fecha
-    c.text(15.7, 18.5, r"\textbf{Fecha de Emision:} "+invoice_dict['date_invoice'])
+    c.text(15.7, 18.5, r"\textbf{Fecha de Emision:} "+str(invoice_dict['date_invoice']))
 
     #Fecha
     c.text(12, 17.5, "Contribuyente No Sujeto.")
@@ -68,6 +68,6 @@ def generate_postscript(invoice_dict):
     #page = document.paperformat(8.5 inch, 11 inch, name=A0)
     page = document.page(c, paperformat="Letter", centered=0)
     doc = document.document(pages=[page])
-    doc.writePSfile("invoice", writebbox=True)
+    doc.writePSfile(invoice_dict['path']+"/invoice", writebbox=True)
 
 generate_postscript(invoice)
