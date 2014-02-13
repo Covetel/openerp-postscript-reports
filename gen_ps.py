@@ -8,8 +8,10 @@ invoice.update({'rif' : '',
     'invoice_footer1' : "Emitir cheques a nombre de Compania",
     'invoice_footer2' : "Cuenta Tipo Banco Nombre No. Cuenta",})
 
-table_items = r""" 1 & 2 & 3 & 4 \\
-"""
+table_items = ""
+
+for line in invoice['invoice_lines']:
+    table_items += r""""""+str(line['invoice_line_quantity'])+r"""&"""+line['invoice_line_name']+r"""&"""+str(line['invoice_line_price_unit'])+r"""&"""+str(line['invoice_line_price_subtotal'])+r"""\\"""
 
 def generate_postscript(invoice_dict):
     text.set(mode="latex")
@@ -19,20 +21,20 @@ def generate_postscript(invoice_dict):
     c = canvas.canvas()
 
     #Factura
-    c.text(18, 19, r"Factura N: \LARGE \textbf{\textcolor{red}{"+str(invoice_dict['invoice_number'])+"}}")
+    c.text(14, 19, r"\textbf{Factura N:} \LARGE \textbf{\textcolor{red}{"+str(invoice_dict['invoice_number'])+"}}")
 
     #Fecha
-    c.text(15.7, 18.5, r"\textbf{Fecha de Emision:} "+str(invoice_dict['date_invoice']))
+    c.text(14, 18.5, r"\textbf{Fecha de Emision:} "+str(invoice_dict['date_invoice']))
 
     #Fecha
     c.text(12, 17.5, "Contribuyente No Sujeto.")
 
     #Cuadro partner_name o razon social
-    c.text(1.1, 16.9, r"""\begin{tabular}{ | c | c | }
+    c.text(1.1, 16.9, r"""\begin{tabular*}{1.61\columnwidth}{@{\extracolsep{\fill}}|c|c|}
       \hline
       \textbf{NOMBRE O RAZON SOCIAL:} """+invoice_dict['partner_name']+r"""& \textbf{RIF:} """+invoice_dict['rif']+r""" \\
       \hline
-    \end{tabular}""")
+    \end{tabular*}""")
 
     c.text(1.1, 16.46, r"""\begin{tabular}{ | c | }
       \hline
@@ -44,13 +46,13 @@ def generate_postscript(invoice_dict):
     #c.stroke(path.rect(1, 16.3, 19, 0.5))
 
     #Header tabla productos
-    c.text(1, 15, r"""\begin{tabular}{ | c | c | c | c |}
+    c.text(1, 15, r"""\begin{tabular*}{1.61\columnwidth}{@{\extracolsep{\fill}}|c|c|c|c|}
       \hline
       \textbf{CANTIDAD} & \textbf{CONCEPTO O DESCRIPCION} & \textbf{PRECIO UNITARIO} & \textbf{VALOR TOTAL} \\
       \hline
       """+table_items+r"""
       \hline
-    \end{tabular}""")
+    \end{tabular*}""")
 
     #Total
     c.text(15.6, 13, r"\textbf{Subtotal Gravado Bs.F:} "+str(invoice_dict['invoice_amount_untaxed']))
