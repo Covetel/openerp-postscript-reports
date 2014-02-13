@@ -2,14 +2,25 @@
 <openerp>
     <data>
         <record id="invoces_postscript_view" model="ir.ui.view">
-            <field name="name">account.invoices.postscript</field>
+            <field name="name">account.invoices.postscript_button</field>
             <field name="model">account.invoice</field>
             <field name="type">form</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/header//button[@name='invoice_print']" position="after">
-                    <button name="invoice_print_ps" string="Print PS" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user" />
+                    <button name="invoice_print_ps" string="Print PS" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>
                 </xpath>
+            </field>
+        </record>
+
+
+        <record id="postscript_download" model="ir.ui.view">
+            <field name="name">postscript_download</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <form string="PostScript">
+                    <field  name="postscript" string="Descargar Factura" readonly="1" filename="postscript_name" />
+                </form>
             </field>
         </record>
     </data>
