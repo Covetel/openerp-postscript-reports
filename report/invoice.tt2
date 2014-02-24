@@ -1,0 +1,64 @@
+[%- USE Latex; FILTER latex("ps"); -%]
+\documentclass[10pt,letterpaper,oneside,spanish]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{graphicx}
+
+
+\thispagestyle{empty}
+
+\addtolength{\topmargin}{4cm}
+
+\begin{document}
+\sffamily
+
+\begin{flushright}
+{\bfseries Factura N:} {\huge [% invoice.id %]}\\[1.5cm]
+{\bfseries Fecha de Emisión:} [% invoice.date %]\\
+{\bfseries Contribuyente no sujeto} \\
+\end{flushright}
+
+\begin{tabular}{|p{15.6cm}|}
+\hline
+{\bfseries NOMBRE O RAZÓN SOCIAL:} [% invoice.client.name %] \\
+\hline
+{\bfseries No.RIF o CED.No:} [% invoice.client.id %]\\
+\hline
+{\bfseries FORMA DE PAGO:} [%invoice.paymentform%]\\
+\hline
+\end{tabular}
+
+\vspace{1cm}
+
+
+\begin{tabular}{|c|p{7.8cm}|p{2cm}|c|}
+\hline
+\textbf{CANTIDAD} & \textbf{CONCEPTO O DESCRIPCION} & \textbf{PRECIO UNITARIO} & \textbf{VALOR TOTAL} \\
+[% FOREACH item IN invoice.items %]
+\hline
+[% item.qty %] & [% item.desc %] & [% item.unit_price %] & [% item.total_price %]\\
+\hline
+[% END %]
+\end{tabular}
+
+
+\begin{flushright}
+\begin{tabular}{r r}
+\textbf{SUB-TOTAL GRAVADO Bs.F}& [% invoice.sub_total %]\\ 
+
+\textbf{IVA 0\% Bs.F:} & [% invoice.iva %]\\
+
+\textbf{TOTAL A PAGAR Bs.F: }& [% invoice.total %]
+\end{tabular}
+\end{flushright}
+
+\vspace{2cm}
+
+\begin{center}
+{\small Emitir cheques a nombre de Asoc. Cooperativa Venezolana de Tecnologías Libres R.S. \\
+Cuenta Corriente Banco Mercantil No. 0105-0093-16-1093095946}
+\end{center}
+
+\end{document}
+[%  END; -%]

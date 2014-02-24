@@ -63,8 +63,11 @@ class account_invoice(osv.osv):
 
                 inv.update({'invoice_lines' : inv_lines})
 
-
+        #Python script
         subprocess.call(['python', path_module + '/gen_ps.py', str(inv)])
+
+        #Perl Script
+        #subprocess.call(['perl', path_module + '/gen_ps.pl', str(inv)])
 
         file = open(path_module +
                     "/" +
