@@ -17,11 +17,13 @@ tables_x_pos = 2.1
 print str(1.72-(tables_x_pos/10))
 
 for line in invoice['invoice_lines']:
-    table_items += r"""\centering"""+str(line['invoice_line_quantity'])+r"""&"""+line['invoice_line_name']+r"""& \centering"""+str(line['invoice_line_price_unit'])+r"""&"""+str(line['invoice_line_price_subtotal'])+r"""\\"""
+    table_items += r"""\centering"""+str(line['invoice_line_quantity'])+r"""&"""+line['invoice_line_name'].encode('utf-8')+r"""& \centering"""+str(line['invoice_line_price_unit'])+r"""&"""+str(line['invoice_line_price_subtotal'])+r"""\\"""
 
 def generate_postscript(invoice_dict):
     text.set(mode="latex")
-    text.preamble(r"\usepackage{color}")
+    text.preamble(r"""\usepackage{color}
+    \usepackage[spanish]{babel}
+    \usepackage[utf8]{inputenc}""")
 
     #Canvas
     c = canvas.canvas()
@@ -38,7 +40,7 @@ def generate_postscript(invoice_dict):
     #Cuadro partner_name o razon social
     c.text(tables_x_pos, 16.6, r"""\begin{tabular*}{"""+str(1.65-(tables_x_pos/10))+r"""\columnwidth}{|p{13cm}|p{3.65cm}|}
       \hline
-      \textbf{NOMBRE O RAZON SOCIAL:} """+invoice_dict['partner_name']+r"""& \textbf{RIF:} """+invoice_dict['rif']+r""" \\
+      \textbf{NOMBRE O RAZON SOCIAL:} """+invoice_dict['partner_name'].encode('utf-8')+r"""& \textbf{RIF:} """+invoice_dict['rif']+r""" \\
       \hline
       \textbf{FORMA DE PAGO:} CONTADO & \\
       \hline
@@ -54,7 +56,7 @@ def generate_postscript(invoice_dict):
     \end{tabular*}""")
 
     #Total
-    c.text(14.3, (table_products_y_pos - 2), r"""\begin{tabular}{r}
+    c.text(13.3, (table_products_y_pos - 2), r"""\begin{tabular}{r}
     \textbf{Subtotal Gravado Bs.F:} """+str(invoice_dict['invoice_amount_untaxed'])+r""" \\ """+
     r"""\textbf{IVA 0\% Bs.F:} 0.00 \\"""+
     r"""\textbf{Total a Pagar Bs.F:} """+str(invoice_dict['invoice_amount_total'])+r"""\\"""+
