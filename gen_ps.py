@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from pyx import *
 import sys, ast
 
@@ -10,7 +11,7 @@ invoice.update({'rif' : '',
 
 table_items = ""
 
-table_products_y_pos = 15
+table_products_y_pos = 14.5
 tables_x_pos = 2.1
 
 print str(1.72-(tables_x_pos/10))
@@ -35,15 +36,11 @@ def generate_postscript(invoice_dict):
     c.text(11, 17.5, "Contribuyente No Sujeto.")
 
     #Cuadro partner_name o razon social
-    c.text(tables_x_pos, 16.9, r"""\begin{tabular*}{"""+str(1.65-(tables_x_pos/10))+r"""\columnwidth}{|p{13cm}|p{3.65cm}|}
+    c.text(tables_x_pos, 16.6, r"""\begin{tabular*}{"""+str(1.65-(tables_x_pos/10))+r"""\columnwidth}{|p{13cm}|p{3.65cm}|}
       \hline
       \textbf{NOMBRE O RAZON SOCIAL:} """+invoice_dict['partner_name']+r"""& \textbf{RIF:} """+invoice_dict['rif']+r""" \\
       \hline
-    \end{tabular*}""")
-
-    c.text(tables_x_pos, 16.46, r"""\begin{tabular*}{"""+str(1.65-(tables_x_pos/10))+r"""\columnwidth}{|p{17.07cm}|}
-      \hline
-      \textbf{FORMA DE PAGO:} CONTADO \\
+      \textbf{FORMA DE PAGO:} CONTADO & \\
       \hline
     \end{tabular*}""")
 
