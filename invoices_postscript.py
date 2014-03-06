@@ -79,7 +79,7 @@ class account_invoice(osv.osv):
         self.write(cr, uid, ids, {'postscript_name': 'invoice.ps', 'postscript' : out}, context=context)
         file.close()
 
-        #subprocess.call(['rm', path_module + '/invoice.ps'])
+        subprocess.call(['rm', path_module + '/invoice.ps'])
 
         #Busco ID de la vista
         obj_model = self.pool.get('ir.model.data')
