@@ -40,7 +40,6 @@ class account_invoice(osv.osv):
         invoices = self.browse(cr, uid, ids)
         for invoice in invoices:
             inv.update({'partner_name': invoice.partner_id.name,
-                'partner_name' : invoice.partner_id.name,
                 'date_invoice' : invoice.date_invoice,
                 'fiscal_position_name' : invoice.fiscal_position.name,
                 'invoice_amount_untaxed' : invoice.amount_untaxed,
