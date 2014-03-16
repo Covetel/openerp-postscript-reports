@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution    
+#    OpenERP, Open Source Management Solution
 #    Copyright (c) 2010-2013 Elico Corp. All Rights Reserved.
 #    Author: Yannick Gouin <yannick.gouin@elico-corp.com>
 #
@@ -21,7 +21,7 @@
 ##############################################################################
 
 from datetime import datetime
-import time, subprocess, base64
+import time, subprocess, base64, pprint
 from osv import fields, osv
 from openerp import modules, tools
 
@@ -33,8 +33,9 @@ class account_invoice(osv.osv):
         "postscript" : fields.binary('Postscript File', readonly=True),
         "postscript_name" : fields.char('Invoice Postscript', 40, readonly=True),
     }
-    
-    def invoice_print_ps(self, cr, uid, ids, context=None):
+
+    def dic_invoice(self, cr, uid, ids):
+
         inv = {}
         path_module = modules.get_module_path('openerp-postscript-reports')
         invoices = self.browse(cr, uid, ids)
@@ -61,14 +62,19 @@ class account_invoice(osv.osv):
                 inv_lines.append(inv_line)
 
                 inv.update({'invoice_lines' : inv_lines})
+        return inv
+
+    def invoice_print_ps(self, cr, uid, ids, context=None):
+
+        inv = self.dic_invoice(cr, uid, ids)
 
         #Python script
-        subprocess.call(['python', path_module + '/gen_ps.py', str(inv)])
+        subprocess.call(['python', inv['path'] + '/gen_ps.py', str(inv)])
 
         #Perl Script
         #subprocess.call(['perl', path_module + '/gen_ps.pl', str(inv)])
 
-        file = open(path_module +
+        file = open(inv['path'] +
                     "/" +
                     "invoice" +
                     ".ps", "rb")
@@ -79,7 +85,7 @@ class account_invoice(osv.osv):
         self.write(cr, uid, ids, {'postscript_name': 'invoice.ps', 'postscript' : out}, context=context)
         file.close()
 
-        subprocess.call(['rm', path_module + '/invoice.ps'])
+        subprocess.call(['rm', inv['path'] + '/invoice.ps'])
 
         #Busco ID de la vista
         obj_model = self.pool.get('ir.model.data')
