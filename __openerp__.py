@@ -6,6 +6,7 @@
    'author': 'Covetel R.S',
    'website': 'http://www.covetel.com.ve',
    'depends': ['stock', 'procurement', 'board', 'sale'],
+   'js': ['static/src/js/print_invoices.js'],
    'data': [],
    'init_xml': [],
    'update_xml': [
