@@ -44,6 +44,7 @@ class account_invoice(osv.osv):
                 'date_invoice' : invoice.date_invoice,
                 'fiscal_position_name' : invoice.fiscal_position.name,
                 'invoice_amount_untaxed' : invoice.amount_untaxed,
+                'invoice_amount_tax' : invoice.amount_tax,
                 'invoice_amount_total' : invoice.amount_total,
                 'invoice_number' : invoice.number,
                 'path': path_module,
