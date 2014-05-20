@@ -1,0 +1,69 @@
+\documentclass[10pt,letterpaper,oneside,spanish]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{graphicx}
+
+
+\thispagestyle{empty}
+
+\addtolength{\topmargin}{4cm}
+
+\begin{document}
+\sffamily
+
+% for invoice in objects:
+
+\begin{flushright}
+  {\bfseries Factura N:} {\huge ${invoice.number}}\\[1.5cm]
+  {\bfseries Fecha de Emisión:} ${invoice.date_invoice} \\[0cm]
+  {\bfseries Contribuyente no sujeto} \\[0cm]
+\end{flushright}
+
+\begin{tabular}{|p{15.6cm}|}
+  \hline
+  {\bfseries NOMBRE O RAZÓN SOCIAL:} ${invoice.partner_id.name}\\[0cm]
+  \hline
+  {\bfseries No.RIF o CED.No:} ${invoice.partner_id.vat}\\[0cm]
+  \hline
+  {\bfseries FORMA DE PAGO:} CONTADO \\[0cm]
+  \hline
+\end{tabular}
+
+\vspace{1cm}
+
+
+\begin{tabular}{|c|p{7.8cm}|p{2cm}|c|}
+  \hline
+  \textbf{CANTIDAD} &
+  \textbf{CONCEPTO O DESCRIPCION} &
+  \textbf{PRECIO UNITARIO} &
+  \textbf{VALOR TOTAL} \\[0cm]
+  % for product in invoice.invoice_line:
+  \hline
+  ${product.quantity} &
+  ${product.name} &
+  ${product.price_unit} &
+  ${product.price_subtotal} \\[0cm]
+  \hline
+  % endfor
+\end{tabular}
+
+\begin{flushright}
+  \begin{tabular}{r r r}
+    \textbf{SUB-TOTAL GRAVADO Bs.F:}& ${invoice.amount_untaxed} \\[0cm] 
+    \textbf{IVA 0\% Bs.F:} & ${invoice.amount_tax} \\[0cm]
+    \textbf{TOTAL A PAGAR Bs.F:} & ${invoice.amount_total} \\[0cm]
+  \end{tabular}
+\end{flushright}
+
+% endfor
+\vspace{2cm}
+
+\begin{center}
+  {\small Emitir cheques a nombre de Asoc. Cooperativa Venezolana de
+    Tecnologías Libres R.S. \\[0cm] Cuenta Corriente Banco Mercantil
+    No. ${company.bank_ids[0].acc_number}}
+\end{center}
+
+\end{document}

@@ -14,8 +14,17 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/header//button[@name='invoice_print']" position="after">
-                    <button name="invoice_print_ps" string="Print PS" type="object" attrs="{'invisible':[('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>
-                    <button name="%(action_client_example)d" string="Printer" type="action" attrs="{'invisible':[('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user" />
+                  <button name="invoice_print_ps"
+			  string="Imprimir Postscript"
+			  type="object"
+			  attrs="{'invisible':[('state', '!=', 'open')]}"
+			  class="oe_highlight"
+			  groups="base.group_user"/>
+                  <button name="%(action_client_example)d"
+			  string="a Impresora" type="action"
+			  attrs="{'invisible':[('state', '!=', 'open')]}"
+			  class="oe_highlight"
+			  groups="base.group_user" />
                 </xpath>
             </field>
         </record>
@@ -30,5 +39,14 @@
                 <button string="Cerrar" class="oe_form_button" special="cancel" />
             </field>
         </record>
+	
+	<report id="print_latex_postscript"
+		string="Factura con Modulo Latex"
+		model="account.invoice"
+		report_type="latex"
+		name="factura.account.latex"
+		rml="openerp-postscript-reports/report/factura.tex"
+		menu="True"
+		auto="False" />
     </data>
 </openerp>
