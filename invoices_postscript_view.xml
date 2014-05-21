@@ -7,28 +7,6 @@
             <field name="tag">printer.action</field>
         </record>
 
-        <record id="invoces_postscript_view" model="ir.ui.view">
-            <field name="name">account.invoices.postscript_button</field>
-            <field name="model">account.invoice</field>
-            <field name="type">form</field>
-            <field name="inherit_id" ref="account.invoice_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="/form/header//button[@name='invoice_print']" position="after">
-                  <button name="invoice_print_ps"
-			  string="Imprimir Postscript"
-			  type="object"
-			  attrs="{'invisible':[('state', '!=', 'open')]}"
-			  class="oe_highlight"
-			  groups="base.group_user"/>
-                  <button name="%(action_client_example)d"
-			  string="a Impresora" type="action"
-			  attrs="{'invisible':[('state', '!=', 'open')]}"
-			  class="oe_highlight"
-			  groups="base.group_user" />
-                </xpath>
-            </field>
-        </record>
-
         <record id="postscript_download" model="ir.ui.view">
             <field name="name">postscript_download</field>
             <field name="model">account.invoice</field>
@@ -41,7 +19,7 @@
         </record>
 	
 	<report id="print_latex_postscript"
-		string="Factura con Modulo Latex"
+		string="Postscript"
 		model="account.invoice"
 		report_type="latex"
 		name="factura.account.latex"
